@@ -13,7 +13,7 @@ namespace GoDaddy_Elements
         {
             By menu = By.XPath("//*[@class='product-flyout-btn']");
 
-            By domain = By.XPath("//*[@class='product-flyout-btn']//following::li[1]/button");
+            By domain = By.XPath("//*[@class='product-flyout-btn']//following::li[1]/button"); 
 
             By List1 = By.XPath("//*[@class='product-flyout-btn']//following::li[1]//child::li");
             By Back = By.XPath("//*[@aria-label='GoDaddy']");
@@ -29,22 +29,31 @@ namespace GoDaddy_Elements
 
             IReadOnlyCollection<IWebElement> list = this.driver.FindElements(List1);
             string a = "//*[@class='product-flyout-btn']//following::li[1]//child::li[";
-            By op; int k;
+            By op; int k,j;
+            string p;
             try
             {
                 Move(driver, menu);
+                Thread.Sleep(500);
                 Mouse_Action(driver, domain);
-                for (int i = 1; i <= list1.Count; i++)
+                Thread.Sleep(500);
+                for (int i = 2; i <= list1.Count; i++)
                 {
                     k = i;
+                    
                     op = By.XPath(a + k.ToString() + "]");
                     Console.WriteLine(a + k.ToString() + "]");
                     if (ElementIs_Clickable(this.driver, op) == true)
                     {
                         Console.WriteLine("Hi");
                         Move(driver, op);
-                        if (driver.Title.Contains(list1[i]))
+                        Thread.Sleep(1000);
+                        p = driver.Title;
+                        if (p.Contains(list1[i]))
+                        {
+                            Thread.Sleep(500);
                             Console.WriteLine("True");
+                        }
                         //Assert.Pass("Pass");
                     }
                     else
@@ -52,8 +61,10 @@ namespace GoDaddy_Elements
 
                     Thread.Sleep(1000);
                     Move(driver, Back);
-                    if (i <= list1.Count)
+                    Thread.Sleep(500);
+                    if (i >list1.Count)
                         break;
+                    
                 }
                 // Assert.Fail("Fail");
             }
