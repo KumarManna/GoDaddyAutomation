@@ -16,7 +16,12 @@ namespace GoDaddy_Elements
             By domain = By.XPath("//*[@class='product-flyout-btn']//following::li[1]/button"); 
 
             By List1 = By.XPath("//*[@class='product-flyout-btn']//following::li[1]//child::li");
-            By Back = By.XPath("//*[@aria-label='GoDaddy']");
+            By Back1 = By.XPath("//*[@aria-label='GoDaddy']");
+            By Back2 = By.XPath("//*[@href=''https://www.godaddy.com/en-in?ci=]");
+
+           // By Back = By.XPath("//*[@href=https://www.godaddy.com/en-in");
+            By c = By.XPath("//*[@class='close']");
+
             List<string> list1 = new List<string>();
             list1.Add("Domain Name Search - Buy and Register Available Domains - GoDaddy IN");
             list1.Add("Domain Transfer | Domain Name Transferring Made Easy - GoDaddy IN");
@@ -29,42 +34,44 @@ namespace GoDaddy_Elements
 
             IReadOnlyCollection<IWebElement> list = this.driver.FindElements(List1);
             string a = "//*[@class='product-flyout-btn']//following::li[1]//child::li[";
-            By op; int k,j;
-            string p;
+            By op; int j;
+            int index = 0;
+            
             try
             {
-                Move(driver, menu);
-                Thread.Sleep(500);
-                Mouse_Action(driver, domain);
-                Thread.Sleep(500);
-                for (int i = 2; i <= list1.Count; i++)
+                
+                j = 2;
+                foreach (string l in list1)
                 {
-                    k = i;
-                    
-                    op = By.XPath(a + k.ToString() + "]");
-                    Console.WriteLine(a + k.ToString() + "]");
-                    if (ElementIs_Clickable(this.driver, op) == true)
+                    Move(driver, menu);
+                    Thread.Sleep(500);
+                    Mouse_Action(driver, domain);
+                    Thread.Sleep(500);
+                    op = By.XPath(a + j.ToString() + "]");
+                    Console.WriteLine(a + j.ToString() + "]");
+                    if (ElementIs_Clickable(this.driver, op))
                     {
-                        Console.WriteLine("Hi");
-                        Move(driver, op);
-                        Thread.Sleep(1000);
-                        p = driver.Title;
-                        if (p.Contains(list1[i]))
+                        try
                         {
-                            Thread.Sleep(500);
-                            Console.WriteLine("True");
+                            Console.WriteLine("Hi");
+                            Move(driver, op);
+                            Thread.Sleep(100);
+                            Console.WriteLine(driver.Title.Contains(list1[index]));
+                            Thread.Sleep(1000);
+                            Move(driver, Back1);
                         }
-                        //Assert.Pass("Pass");
+                        catch (Exception)
+                        {
+                            driver.Navigate().Back();
+                        }
+                        index++;
+                       
                     }
                     else
-                        Console.WriteLine("False");
-
-                    Thread.Sleep(1000);
-                    Move(driver, Back);
-                    Thread.Sleep(500);
-                    if (i >list1.Count)
-                        break;
-                    
+                    {
+                        Move(driver, c);
+                    }
+                    j++;
                 }
                 // Assert.Fail("Fail");
             }
